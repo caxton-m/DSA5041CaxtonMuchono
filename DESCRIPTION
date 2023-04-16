@@ -1,11 +1,15 @@
-Package: DSA5041CaxtonMuchono
+Package: mypackage
 Type: Package
 Title: Introductory Package
 Version: 0.1.0
 Author: Caxton Muchono
 Maintainer: Caxton Muchono <caxton.muchono-1@ou.edu>
-Description: This is a test package 
-License: MIT
+Description: This is a test package. 
+License: MIT + file LICENSE
+Imports:
+    dplyr, 
+    stats,
+    kableExtra
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

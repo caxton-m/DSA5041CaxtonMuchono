@@ -1,0 +1,116 @@
+---
+title: "mypackage"
+author: "Caxton Muchono"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE, include=FALSE}
+# libraries needed for the package 
+library(kableExtra)
+library(mypackage)
+```
+
+### Make some random data
+
+```{r}
+# make some data for x, y, alpha 
+set.seed(21)
+x <-rnorm(30,5,2)
+
+set.seed(23) 
+y<- rnorm(40, 3,2)
+
+length(x) = length(y)
+
+alpha <- 0.05
+```
+
+###  Create the Constructor
+
+The constructor function will takes two vectors and alpha. Assume that the variances in the population are the same (this will mean a simple no conditional function)
+
+The function must produce a named list containing:
+
+* A data frame containing x and y
+* alpha
+* The confidence interval for mux-muy
+* The pvalue
+
+The list will be of class "Rttest"
+
+```{r}
+
+myconstr = function(x, y, alpha){
+  
+  # make t-test assuming that the variances in the population are the same 
+  tests = t.test(x = x, y = y, var.equal = TRUE, conf.level = 1 - alpha)
+  
+  # summary of t-test and its probabilities  
+  sum = summary(tests)
+  
+  # create a data frame 
+  df = data.frame(x = x, y = y)
+  
+  # find the confidence intervals and p-value 
+  conf_inter = tests$conf.int
+  p_value = tests$p.value
+  
+  # make a named list of function
+  fcn_list = list(data = df, alpha = alpha, conf_inter = conf_inter, p_value = p_value)
+  
+  # make list to be of class "Rttest"
+  class(fcn_list) = "Rttest"
+  
+  return(fcn_list)
+}
+```
+
+
+### An informative plot with the "Rttest" class
+
+```{r}
+
+plot.Rttest = function(x, pch=21,bg="Blue", cex =3){
+  plot(x[["data"]][["x"]],x[["data"]][["y"]], 
+       pch = pch, 
+       bg = bg,
+       xlab = "x",
+       ylab = "y"
+  )
+}
+```
+
+### Print the data frame using kableExtra::kable()
+
+```{r}
+print.Rttest = function(x) {
+  
+  kable(x$data,                               # access the dataframe from obj
+        booktabs   = TRUE,                    # give default formatting of table
+        table.attr = "style='width:50%;'",    # change table width 
+        align      = "c") %>%                 # center alignment 
+    
+    # change column header style
+    row_spec(row = 0, color = "white", background = "#FF5733") %>%
+    
+    # styling of the font
+    kable_styling(latex_options = "scale_down")
+}
+```
+
+
+### Test the constructor with a function call from the provided data
+
+```{r}
+obj <- mypackage::myconstr(x=x,y=y,alpha = 0.05)
+library(mypackage)
+print(obj)
+plot(obj)
+```
