@@ -4,19 +4,12 @@
 \alias{plot.Rttest}
 \title{An informative plot with the "Rttest" class}
 \usage{
-\method{plot}{Rttest}(x, pch = 21, bg = "Blue", cex = 3, ...)
+\method{plot}{Rttest}(x, ...)
 }
 \arguments{
 \item{x}{named list of myconstr function}
 
-\item{pch}{single character to be used as the default in plotting points}
-
-\item{bg}{The color to be used for the background of the device region}
-
-\item{cex}{A numerical value giving the amount by which plotting text
-and symbols should be magnified relative to the default.}
-
-\item{...}{from print function}
+\item{...}{from ggplot function}
 }
 \value{
 plot of the data frame

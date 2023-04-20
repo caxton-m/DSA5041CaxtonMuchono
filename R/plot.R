@@ -2,11 +2,8 @@
 #' An informative plot with the "Rttest" class
 #'
 #' @param x named list of myconstr function
-#' @param ... from print function
-#' @param pch single character to be used as the default in plotting points
-#' @param bg The color to be used for the background of the device region
-#' @param cex A numerical value giving the amount by which plotting text
-#'             and symbols should be magnified relative to the default.
+#' @param ... from ggplot function
+#' @importFrom ggplot2 'aes' 'geom_boxplot' 'ggplot'
 #'
 #' @return plot of the data frame
 #' @export plot.Rttest
@@ -14,11 +11,16 @@
 #' @export
 #'
 #' @examples
-plot.Rttest = function(x, pch=21,bg="Blue", cex =3, ...){
-  plot(x[["data"]][["x"]],x[["data"]][["y"]],
-       pch = pch,
-       bg = bg,
-       xlab = "x",
-       ylab = "y"
-  )
+plot.Rttest = function(x, ...){
+
+  data_var = NULL    # the letter of the the data (X or Y)
+  value    = NULL    # value of data
+
+  x_data = data.frame(value = x$data$x, data_var = rep(LETTERS[24]))
+  y_data = data.frame(value = x$data$y, data_var = rep(LETTERS[25]))
+
+  merge_data = merge(x = x_data, y = y_data, all = TRUE)
+
+  ggplot(merge_data, aes(x = data_var , y= value , fill=data_var )) +
+    geom_boxplot()
 }
